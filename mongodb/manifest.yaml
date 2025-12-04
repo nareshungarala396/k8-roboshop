@@ -17,7 +17,7 @@ spec:
       component: mongodb
       tier: db
  # pod defnition   
-  tempalte:
+  template:
     metadata:
       labels:
         project: roboshop
@@ -47,7 +47,7 @@ metadata:
    name: mongodb
    namespace: roboshop
 spec:
-  slector:
+  selector:
     project: roboshop
     component: mongodb
     tier: db
