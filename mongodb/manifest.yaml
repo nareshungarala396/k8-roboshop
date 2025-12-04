@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deplyment
+metadata: 
+  name: mongodb
+  namespace: roboshop
+  #these labels are replicaset labels
+  labels:
+    project: roboshop
+    component: mongodb
+    tier: db
+spec:
+  replicas: 1
+  selector:
+  #these labels are used to select the pods
+    matchLabels:
+      project: roboshop
+      component: mongodb
+      tier: db
+ # pod defnition   
+  tempalte:
+    metadata:
+      labels:
+        project: roboshop
+        component: mongodb
+        tier: db
+        
+    spec:
+      containers:
+      - name: mongodb
+        image: nareshungarala/mongodb:v1
+        imagePullPolicy: Always
+        readinessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+#service for running mongodb          
+apiVersion: v1
+kind: Service
+metadata:
+   name: mongodb
+   namespace: roboshop
+spec:
+  slector:
+    project: roboshop
+    component: mongodb
+    tier: db
+  ports:
+    - protocol: TCP
+      port: 27017 #service port
+      targetPort: 27017  #target port
